@@ -35,8 +35,10 @@
 
 //Notice: When using the SAMD board, select the serial port(Serial/Serial1/SerialUSB...)
 #ifdef ARDUINO_SAMD_VARIANT_COMPLIANCE
+    #undef
     #define SERIAL Serial
 #else
+    #undef
     #define SERIAL Serial
 #endif
 
@@ -417,7 +419,7 @@ const unsigned char IMAGE_RED[] PROGMEM = { /* 0X00,0X01,0XC8,0X00,0XC8,0X00, */
 int begin_flag = 0;
 //Send data to e-link board.
 void serial_send_data(const uint8_t* data, uint32_t data_len) {
-    for (int i = 0; i < data_len; i++) {
+    for (uint32_t i = 0; i < data_len; i++) {
         SERIAL.write(pgm_read_byte(&data[i]));
     }
 }
@@ -444,7 +446,7 @@ void send_begin() {
         if (SERIAL.available() > 0) {
             delay(10);
             char str1 = SERIAL.read();
-            Serial.print(str1);
+            SERIAL.print(str1);
             if (str1 == 'b') {
                 break;
             }
